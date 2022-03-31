@@ -1,5 +1,7 @@
 <?php
     //Объявление переменных
+    $start_date=(string)($_POST['calendar1']);
+    print "<br>$start_date<br>";
     $system = php_uname();
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
