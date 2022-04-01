@@ -1,13 +1,15 @@
 <?php
+    //Функция перевода даты
+
     //Объявление переменных
-    $start_date=(string)($_POST['calendar1']);
-    print "<br>$start_date<br>";
+    $start_date=date_format(date_create($_POST['calendar1']), "H:i:s d M Y");
+    $end_date = date_format(date_create($_POST['calendar2']), "H:i:s d M Y");
     $system = php_uname();
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
     $page = getenv("HTTP_REFERER");
+    $time = date("H:i:s d M Y");
     $link = mysqli_connect("localhost", "root", "","data");
-    $time = (string)date("H:i:s d M Y");
     //Подключение к базе для записи данных пользователя
     //Проверка подключения(потом удалить)
     if($link == false){
@@ -36,10 +38,14 @@
     echo '<br><br>';
     echo date("H:i:s d M Y");
     //Запросы на получение данных
-    $sql = 'SELECT id, ip, system, host, page, time FROM info';
+    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time > '.$start_date.' AND time < '.$end_date.')";
     $result = mysqli_query($link, $sql);
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
+    print count($db);
+    if(count($db) <= 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
+    else
+    {
     $n = $db[count($db)-1]['id'] - $db[0]['id'];
     for($i = 0; $i < $n; $i++){
         $table[$i][1] = $db[$i]['ip'];
@@ -59,4 +65,5 @@
         echo '</tr>';
     }
     echo '</table>';
+    }
 ?>
