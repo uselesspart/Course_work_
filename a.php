@@ -1,49 +1,56 @@
+<html>
+<head>
+<title> Информация о запросах </title>
+<style> 
+    input{
+        border-radius: 5px;
+        width: 150px; /* Ширина кнопки */
+        height: 30px; /* Высота */
+        font-size: 15pt;
+        position: absolute;
+        top: -30%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+    div.container1{
+        font-size: 20pt;
+        height: 10em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+</style>
+</head>
+<body>
 <?php
-    //Функция перевода даты
-
+    date_default_timezone_set('Europe/Moscow');
     //Объявление переменных
-    $start_date=date_format(date_create($_POST['calendar1']), "H:i:s d M Y");
-    $end_date = date_format(date_create($_POST['calendar2']), "H:i:s d M Y");
+    $start_date=date_format(date_create($_POST['calendar1']), "Y-m-d H:i:s");
+    $end_date = date_format(date_create($_POST['calendar2']), "Y-m-d H:i:s");
     $system = php_uname();
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
     $page = getenv("HTTP_REFERER");
-    $time = date("H:i:s d M Y");
+    $time = date("Y-m-d H:i:s");
     $link = mysqli_connect("localhost", "root", "","data");
     //Подключение к базе для записи данных пользователя
-    //Проверка подключения(потом удалить)
-    if($link == false){
-        print("Ошибка подключения!  " .mysqli_connect_error());
-    }
-    else print ("Соединение установлено!  ");
     //Запись данных пользователя в таблицу
-    $sql = "INSERT INTO info SET ip = '.$ip.',  system ='.$system.', host='.$host.', page = '.$page.', time = '.$time.'";
+    $sql = "INSERT INTO info SET ip = '$ip',  system ='$system', host='$host', page = '$page', time = '$time'";
     $result = mysqli_query($link, $sql);
-    //Проверка успешности запроса(потом удалить)
-    if($result == false){
-        print("Ошибка запроса!  ");
-    }
-    else print ("Запрос успешен!  ");
-    //Вывод сырых данных на экран(потом удалить)
-    echo '<br><br>';
-    echo getenv("REMOTE_ADDR");
-    echo '<br><br>';
-    echo '<br><br>';
-    echo  '<br><br>';
-    echo php_uname();
-    echo  '<br><br>';
-    echo gethostname();
-    echo '<br><br>';
-    echo getenv("HTTP_REFERER");
-    echo '<br><br>';
-    echo date("H:i:s d M Y");
-    //Запросы на получение данных
-    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time > '.$start_date.' AND time < '.$end_date.')";
+    //Запрос на получение данных
+    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time > '$start_date' AND time < '$end_date')";
     $result = mysqli_query($link, $sql);
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
-    print count($db);
-    if(count($db) <= 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
+    //Кнопка "Назад"
+    echo '<div class=container1>';
+    echo '<form action = "index.php" method = "post">';
+    echo '<input type="button" value="Назад" onclick="history.back()">';
+    echo '</form>';
+    if(count($db) == 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
     else
     {
     $n = $db[count($db)-1]['id'] - $db[0]['id'];
@@ -66,4 +73,7 @@
     }
     echo '</table>';
     }
+    echo '</div>';
 ?>
+</body>
+</html>
