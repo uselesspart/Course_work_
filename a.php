@@ -46,7 +46,10 @@
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
     //Кнопка "Назад"
+<<<<<<< HEAD
     echo '<div class=container1>';
+=======
+>>>>>>> 20e8b51043e2f62a320f4c1dc85706c8f1eea3aa
     echo '<form action = "index.php" method = "post">';
     echo '<input type="button" value="Назад" onclick="history.back()">';
     echo '</form>';
