@@ -1,8 +1,10 @@
 <?php
+    date_default_timezone_set('Europe/Moscow');
     //Объявление переменных
     $start_date=date_format(date_create($_POST['calendar1']), "Y-m-m H:i:s");
     $end_date = date_format(date_create($_POST['calendar2']), "Y-m-d H:i:s");
     print($start_date);
+    print "<br>$end_date<br>";
     $system = php_uname();
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
@@ -14,8 +16,8 @@
     //Запись данных пользователя в таблицу
     $sql = "INSERT INTO info SET ip = '$ip',  system ='$system', host='$host', page = '$page', time = '$time'";
     $result = mysqli_query($link, $sql);
-    //Запросы на получение данных
-    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time BETWEEN '$start_date' AND '$end_date')";
+    //Запрос на получение данных
+    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time > '$start_date' AND time < '$end_date')";
     $result = mysqli_query($link, $sql);
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
