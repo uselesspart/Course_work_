@@ -3,14 +3,11 @@
     //Объявление переменных
     $start_date=date_format(date_create($_POST['calendar1']), "Y-m-m H:i:s");
     $end_date = date_format(date_create($_POST['calendar2']), "Y-m-d H:i:s");
-    print($start_date);
-    print "<br>$end_date<br>";
     $system = php_uname();
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
     $page = getenv("HTTP_REFERER");
     $time = date("Y-m-d H:i:s");
-    print "<br>$time<br>";
     $link = mysqli_connect("localhost", "root", "","data");
     //Подключение к базе для записи данных пользователя
     //Запись данных пользователя в таблицу
@@ -21,6 +18,10 @@
     $result = mysqli_query($link, $sql);
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
+    //Кнопка "Назад"
+    echo '<form action = "index.php" method = "post">';
+    echo '<input type="button" value="Назад" onclick="history.back()">';
+    echo '</form>';
     if(count($db) == 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
     else
     {
