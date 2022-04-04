@@ -1,23 +1,25 @@
 <?php
     //Объявление переменных
-    $start_date=date_format(date_create($_POST['calendar1']), "H:i:s d M Y");
-    $end_date = date_format(date_create($_POST['calendar2']), "H:i:s d M Y");
+    $start_date=date_format(date_create($_POST['calendar1']), "Y-m-m H:i:s");
+    $end_date = date_format(date_create($_POST['calendar2']), "Y-m-d H:i:s");
+    print($start_date);
     $system = php_uname();
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
     $page = getenv("HTTP_REFERER");
-    $time = date("H:i:s d M Y");
+    $time = date("Y-m-d H:i:s");
+    print "<br>$time<br>";
     $link = mysqli_connect("localhost", "root", "","data");
     //Подключение к базе для записи данных пользователя
     //Запись данных пользователя в таблицу
-    $sql = "INSERT INTO info SET ip = '.$ip.',  system ='.$system.', host='.$host.', page = '.$page.', time = '.$time.'";
+    $sql = "INSERT INTO info SET ip = '$ip',  system ='$system', host='$host', page = '$page', time = '$time'";
     $result = mysqli_query($link, $sql);
     //Запросы на получение данных
-    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time > '.$start_date.' AND time < '.$end_date.')";
+    $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time BETWEEN '$start_date' AND '$end_date')";
     $result = mysqli_query($link, $sql);
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
-    if(count($db) <= 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
+    if(count($db) == 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
     else
     {
     $n = $db[count($db)-1]['id'] - $db[0]['id'];
