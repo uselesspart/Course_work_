@@ -1,6 +1,7 @@
 <html>
 <head>
 <title> Информация о запросах </title>
+//Настройки стиля страницы
 <style> 
     input{
         border-radius: 5px;
@@ -26,6 +27,7 @@
 </head>
 <body>
 <?php
+    //Установка часового пояса
     date_default_timezone_set('Europe/Moscow');
     //Объявление переменных
     $start_date=date_format(date_create($_POST['calendar1']), "Y-m-d H:i:s");
@@ -43,13 +45,15 @@
     //Запрос на получение данных
     $sql = "SELECT id, ip, system, host, page, time FROM info WHERE(time > '$start_date' AND time < '$end_date')";
     $result = mysqli_query($link, $sql);
+    //Запись данных ро запросу в массив $db
     $db = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $table = array(array());
-    //Кнопка "Назад"
     echo '<div class=container1>';
     echo '<form action = "index.php" method = "post">';
+    //Кнопка "Назад"
     echo '<input type="button" value="Назад" onclick="history.back()">';
     echo '</form>';
+    //Заполнение массива для таблицы
     if(count($db) == 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
     else
     {
