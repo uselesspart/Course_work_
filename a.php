@@ -1,7 +1,6 @@
 <html>
 <head>
 <title> Информация о запросах </title>
-//Настройки стиля страницы
 <style> 
     input{
         border-radius: 5px;
