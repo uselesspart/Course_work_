@@ -56,7 +56,7 @@
     if(count($db) == 0) print '<br>Не найдено запросов в выбранный временной промежуток<br>';
     else
     {
-    $n = $db[count($db)-1]['id'] - $db[0]['id'];
+    $n = $db[count($db)-1]['id'] - $db[0]['id'] + 1;
     for($i = 0; $i < $n; $i++){
         $table[$i][1] = $db[$i]['ip'];
         $table[$i][2] = $db[$i]['system'];
