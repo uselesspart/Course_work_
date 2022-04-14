@@ -37,6 +37,23 @@
     $page = getenv("HTTP_REFERER");
     $time = date("Y-m-d H:i:s");
     $link = mysqli_connect("localhost", "root", "","data");
+    $sql = "SELECT * FROM info";
+    $result = mysqli_query($link, $sql);
+    if($result == false){
+        $link = mysqli_connect("localhost", "root", "");
+        $sql = "CREATE DATABASE info";
+        $result = mysqli_query($link, $sql);
+        $result = mysqli_select_db($link, 'data');
+        $sql = "CREATE TABLE info (
+        id int(4) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        system varchar(100) DEFAULT NULL,
+        ip varchar(100) DEFAULT NULL,
+        host varchar(100) DEFAULT NULL,
+        page varchar(100) DEFAULT NULL,
+        time datetime NOT NULL
+        )";
+        $result = mysqli_query($link, $sql);
+    }
     //Подключение к базе для записи данных пользователя
     //Запись данных пользователя в таблицу
     $sql = "INSERT INTO info SET ip = '$ip',  system ='$system', host='$host', page = '$page', time = '$time'";
