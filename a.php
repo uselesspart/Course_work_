@@ -2,25 +2,21 @@
 <head>
 <title> Информация о запросах </title>
 <style> 
+    html, body {
+     width: 100%;
+    }
     input{
         border-radius: 5px;
-        width: 150px; /* Ширина кнопки */
-        height: 30px; /* Высота */
         font-size: 15pt;
-        position: absolute;
-        top: -30%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%)
     }
     div.container1{
         font-size: 20pt;
-        height: 10em;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%)
+        width: 100%;
+        text-align: center;
+    }
+    table{
+        margin: 0 auto;
     }
 </style>
 </head>
