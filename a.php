@@ -27,7 +27,7 @@
     //Объявление переменных
     $start_date=date_format(date_create($_POST['calendar1']), "Y-m-d H:i:s");
     $end_date = date_format(date_create($_POST['calendar2']), "Y-m-d H:i:s");
-    $system = php_uname();
+    $user_agent = $_SERVER["HTTP_USER_AGENT"];
     $ip = getenv("REMOTE_ADDR");
     $host = gethostname();
     $page = getenv("HTTP_REFERER");
@@ -50,6 +50,13 @@
         )";
         $result = mysqli_query($link, $sql);
     }
+    if (strpos($user_agent, "Firefox") !== false) $browser = "Firefox";
+    elseif (strpos($user_agent, "Opera") !== false) $browser = "Opera";
+    elseif (strpos($user_agent, "Chrome") !== false) $browser = "Chrome";
+    elseif (strpos($user_agent, "MSIE") !== false) $browser = "Internet Explorer";
+    elseif (strpos($user_agent, "Safari") !== false) $browser = "Safari";
+    else $browser = "Неизвестный";
+    $system = $browser . " " . php_uname($user_agent);
     //Подключение к базе для записи данных пользователя
     //Запись данных пользователя в таблицу
     $sql = "INSERT INTO info SET ip = '$ip',  system ='$system', host='$host', page = '$page', time = '$time'";
