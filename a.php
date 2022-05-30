@@ -32,12 +32,17 @@
     $host = gethostname();
     $page = getenv("HTTP_REFERER");
     $time = date("Y-m-d H:i:s");
-    $link = mysqli_connect("localhost", "root", "","data");
-    $sql = "SELECT * FROM info";
-    $result = mysqli_query($link, $sql);
+    $os = "";
+    try{
+        $link = mysqli_connect("localhost", "root", "","data");
+        $sql = "SELECT * FROM info";
+        $result = mysqli_query($link, $sql);
+    }catch(Exception $e){
+        $result = false;
+    }
     if($result == false){
         $link = mysqli_connect("localhost", "root", "");
-        $sql = "CREATE DATABASE info";
+        $sql = "CREATE DATABASE data";
         $result = mysqli_query($link, $sql);
         $result = mysqli_select_db($link, 'data');
         $sql = "CREATE TABLE info (
@@ -56,7 +61,12 @@
     elseif (strpos($user_agent, "MSIE") !== false) $browser = "Internet Explorer";
     elseif (strpos($user_agent, "Safari") !== false) $browser = "Safari";
     else $browser = "Неизвестный";
-    $system = $browser . " " . php_uname($user_agent);
+    if (strpos($user_agent, "Windows") !== false) $os = "Windows";
+    elseif (strpos($user_agent, "Linux") !== false) $os = "Linux";
+    elseif (strpos($user_agent, "IOS") !== false) $os = "IOS";
+    elseif (strpos($user_agent, "OS X") !== false) $os = "OS X";
+    else $os = "Неизвестный";
+    $system = $browser . " " . $os;
     //Подключение к базе для записи данных пользователя
     //Запись данных пользователя в таблицу
     $sql = "INSERT INTO info SET ip = '$ip',  system ='$system', host='$host', page = '$page', time = '$time'";
@@ -86,7 +96,7 @@
     }
     //Отрисовка таблицы
     echo '<table border = "1"';
-    echo '<tr><td>IP</td><td>System</td><td>Host</td><td>Page</td><td>Time</td>';
+    echo '<tr><td>IP</td><td>ОС</td><td>Хост</td><td>Страница - рефферер</td><td>Время</td>';
     for($i = 0; $i < $n; $i++){
         echo '<tr>';
         for($j = 1; $j <= 5; $j++){
