@@ -55,17 +55,23 @@
         )";
         $result = mysqli_query($link, $sql);
     }
-    if (strpos($user_agent, "Firefox") !== false) $browser = "Firefox";
-    elseif (strpos($user_agent, "Opera") !== false) $browser = "Opera";
-    elseif (strpos($user_agent, "Chrome") !== false) $browser = "Chrome";
-    elseif (strpos($user_agent, "MSIE") !== false) $browser = "Internet Explorer";
-    elseif (strpos($user_agent, "Safari") !== false) $browser = "Safari";
-    else $browser = "Неизвестный";
     if (strpos($user_agent, "Windows") !== false) $os = "Windows";
     elseif (strpos($user_agent, "Linux") !== false) $os = "Linux";
     elseif (strpos($user_agent, "IOS") !== false) $os = "IOS";
     elseif (strpos($user_agent, "OS X") !== false) $os = "OS X";
     else $os = "Неизвестный";
+    function get_browser_name($user_agent)
+    {
+    if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/')) return 'Opera';
+    elseif (strpos($user_agent, 'Edg')) return 'Edge';
+    elseif (strpos($user_agent, 'Chrome')) return 'Chrome';
+    elseif (strpos($user_agent, 'Safari')) return 'Safari';
+    elseif (strpos($user_agent, 'Firefox')) return 'Firefox';
+    elseif (strpos($user_agent, 'MSIE') || strpos($user_agent, 'Trident/7')) return 'Internet Explorer';
+   
+    return 'Other';
+    }   
+    $browser = get_browser_name($user_agent);
     $system = $browser . " " . $os;
     //Подключение к базе для записи данных пользователя
     //Запись данных пользователя в таблицу
